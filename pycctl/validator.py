@@ -17,12 +17,12 @@ from pycctl.fsys import get_path_to_root
 from pycctl.node import get_rpc_client
 
 
-def validate_chain_accounts_are_funded():
-    assert get_account_balance(AccountType.FAUCET) > 0
+async def validate_chain_accounts_are_funded():
+    assert await get_account_balance(AccountType.FAUCET) > 0
     for idx in range(1, USER_COUNT):
-        assert get_account_balance(AccountType.USER, idx) > 0
+        assert await get_account_balance(AccountType.USER, idx) > 0
     for idx in range(1, NODE_COUNT):
-        assert get_account_balance(AccountType.VALIDATOR, idx) > 0
+        assert await get_account_balance(AccountType.VALIDATOR, idx) > 0
 
 
 def validate_infra_net_assets_setup():
@@ -84,25 +84,25 @@ def validate_infra_net_assets_setup():
         func()
 
 
-def validate_infra_net_is_up():
+async def validate_infra_net_is_up():
     """Validates that net nodes are up.
     
     """
     count_up: int = 0
     for idx in range(1, NODE_COUNT):
-        if validate_infra_node_start(idx):
+        if await validate_infra_node_start(idx):
             count_up += 1
 
     assert count_up >= int(NODE_COUNT / 2), count_up
 
 
-def validate_infra_node_start(idx: int) -> bool:
+async def validate_infra_node_start(idx: int) -> bool:
     """Validates that node is up.
     
     """
     client = get_rpc_client(idx)        
     try:
-        client.get_node_status()
+        await client.get_node_status()
     except:
         return False
     else:

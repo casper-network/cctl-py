@@ -1,8 +1,11 @@
-from pycspr.api.connection import NodeConnectionInfo
 from pycspr.api.rest import Client as RestClient
+from pycspr.api.rest import ConnectionInfo as RestConnectionInfo
 from pycspr.api.rpc import Client as RpcClient
+from pycspr.api.rpc import ConnectionInfo as RpcConnectionInfo
 from pycspr.api.rpc_speculative import Client as RpcSpeculativeClient
+from pycspr.api.rpc_speculative import ConnectionInfo as RpcSpeculativeConnectionInfo
 from pycspr.api.sse import Client as SseClient
+from pycspr.api.sse import ConnectionInfo as SseConnectionInfo
 from pycctl.constants import BASE_PORT_REST
 from pycctl.constants import BASE_PORT_RPC
 from pycctl.constants import BASE_PORT_SPEC_EXEC
@@ -24,33 +27,33 @@ def get_port(typeof: NodePortType, node_idx: int) -> int:
 
 def get_rest_client(node_idx: int = 1) -> RestClient:
     return RestClient(
-        NodeConnectionInfo(
-            port_rest=get_port(NodePortType.REST, node_idx),
+        RestConnectionInfo(
+            port=get_port(NodePortType.REST, node_idx)
         )
     )
 
 
 def get_rpc_client(node_idx: int = 1) -> RpcClient:
     return RpcClient(
-        NodeConnectionInfo(
-            port_rpc=get_port(NodePortType.RPC, node_idx),
+        RpcConnectionInfo(
+            port=get_port(NodePortType.RPC, node_idx)
         )
     )
 
 
 def get_rpc_speculative_client(node_idx: int = 1) -> RpcSpeculativeClient:
     return RpcSpeculativeClient(
-        NodeConnectionInfo(
-            port_rpc_speculative=get_port(NodePortType.RPC_SPECULATIVE, node_idx),
+        RpcSpeculativeConnectionInfo(
+            port=get_port(NodePortType.RPC_SPECULATIVE, node_idx)
         )
     )
 
 
 def get_sse_client(node_idx: int = 1) -> SseClient:
     return SseClient(
-        NodeConnectionInfo(
+        SseConnectionInfo(
+            port=get_port(NodePortType.SSE, node_idx),
             port_rpc=get_port(NodePortType.RPC, node_idx),
-            port_sse=get_port(NodePortType.SSE, node_idx),
         )
     )
 
