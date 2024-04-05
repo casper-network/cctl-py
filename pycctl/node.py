@@ -21,11 +21,24 @@ _PORT_BY_TYPE = {
 }
 
 
-def get_port(typeof: NodePortType, node_idx: int) -> int:
-    return _PORT_BY_TYPE[typeof] + node_idx
+def get_port(port_type: NodePortType, node_idx: int) -> int:
+    """Returns a node's port.
+    
+    :param port_type: Type of node port.
+    :param node_idx: Index of node.
+    :returns: A node port.
+    
+    """
+    return _PORT_BY_TYPE[port_type] + node_idx
 
 
 def get_rest_client(node_idx: int = 1) -> RestClient:
+    """Returns a node REST API client.
+    
+    :param node_idx: Index of node.
+    :returns: A node REST API client.
+    
+    """
     return RestClient(
         RestConnectionInfo(
             port=get_port(NodePortType.REST, node_idx)
@@ -34,6 +47,12 @@ def get_rest_client(node_idx: int = 1) -> RestClient:
 
 
 def get_rpc_client(node_idx: int = 1) -> RpcClient:
+    """Returns a node JSON-RPC API client.
+    
+    :param node_idx: Index of node.
+    :returns: A node JSON-RPC API client.
+    
+    """
     return RpcClient(
         RpcConnectionInfo(
             port=get_port(NodePortType.RPC, node_idx)
@@ -42,6 +61,12 @@ def get_rpc_client(node_idx: int = 1) -> RpcClient:
 
 
 def get_rpc_speculative_client(node_idx: int = 1) -> RpcSpeculativeClient:
+    """Returns a node speculative JSON-RPC API client.
+    
+    :param node_idx: Index of node.
+    :returns: A node speculative JSON-RPC API client.
+    
+    """
     return RpcSpeculativeClient(
         RpcSpeculativeConnectionInfo(
             port=get_port(NodePortType.RPC_SPECULATIVE, node_idx)
@@ -50,10 +75,15 @@ def get_rpc_speculative_client(node_idx: int = 1) -> RpcSpeculativeClient:
 
 
 def get_sse_client(node_idx: int = 1) -> SseClient:
+    """Returns a node SSE API client.
+    
+    :param node_idx: Index of node.
+    :returns: A node SSE API client.
+    
+    """
     return SseClient(
         SseConnectionInfo(
             port=get_port(NodePortType.SSE, node_idx),
             port_rpc=get_port(NodePortType.RPC, node_idx),
         )
     )
-

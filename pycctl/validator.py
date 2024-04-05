@@ -1,8 +1,8 @@
 from pycctl.accounts import get_account_balance
 from pycctl.constants import NET_BINARIES
 from pycctl.constants import NODE_CONFIG
-from pycctl.constants import NODE_COUNT
-from pycctl.constants import USER_COUNT
+from pycctl.constants import COUNT_OF_NODES
+from pycctl.constants import COUNT_OF_USERS
 from pycctl.types import AccountType
 from pycctl.types import AssymetricKeyType
 from pycctl.fsys import get_path_to_account_key
@@ -18,10 +18,13 @@ from pycctl.node import get_rpc_client
 
 
 async def validate_chain_accounts_are_funded():
+    """Validates funding status of CCTL accounts.
+    
+    """
     assert await get_account_balance(AccountType.FAUCET) > 0
-    for idx in range(1, USER_COUNT):
+    for idx in range(1, COUNT_OF_USERS):
         assert await get_account_balance(AccountType.USER, idx) > 0
-    for idx in range(1, NODE_COUNT):
+    for idx in range(1, COUNT_OF_NODES):
         assert await get_account_balance(AccountType.VALIDATOR, idx) > 0
 
 
@@ -40,10 +43,10 @@ def validate_infra_net_assets_setup():
             if account_type == AccountType.FAUCET:
                 assert get_path_to_account_key_directory(account_type).exists()
             elif account_type == AccountType.USER:
-                for idx in range(1, USER_COUNT):
+                for idx in range(1, COUNT_OF_USERS):
                     assert get_path_to_account_key_directory(account_type, idx).exists()
             elif account_type == AccountType.VALIDATOR:
-                for idx in range(1, NODE_COUNT):
+                for idx in range(1, COUNT_OF_NODES):
                     assert get_path_to_account_key_directory(account_type, idx).exists()
 
     def _parse_path_to_account_directory_keys():
@@ -52,10 +55,10 @@ def validate_infra_net_assets_setup():
                 if account_type == AccountType.FAUCET:
                     assert get_path_to_account_key(account_type, key_type).exists()
                 elif account_type == AccountType.USER:
-                    for idx in range(1, USER_COUNT):
+                    for idx in range(1, COUNT_OF_USERS):
                         assert get_path_to_account_key(account_type, key_type, idx).exists()
                 elif account_type == AccountType.VALIDATOR:
-                    for idx in range(1, NODE_COUNT):
+                    for idx in range(1, COUNT_OF_NODES):
                         assert get_path_to_account_key(account_type, key_type, idx).exists()
 
     def _parse_path_to_genesis_artefacts():
@@ -67,7 +70,7 @@ def validate_infra_net_assets_setup():
             assert get_path_to_binary(fname).exists()
 
     def _parse_path_to_node():
-        for idx in range(1, NODE_COUNT):
+        for idx in range(1, COUNT_OF_NODES):
             assert get_path_to_node(idx).exists()
             for fname in NODE_CONFIG:
                 assert get_path_to_node_config(idx, fname).exists()
@@ -89,11 +92,11 @@ async def validate_infra_net_is_up():
     
     """
     count_up: int = 0
-    for idx in range(1, NODE_COUNT):
+    for idx in range(1, COUNT_OF_NODES):
         if await validate_infra_node_start(idx):
             count_up += 1
 
-    assert count_up >= int(NODE_COUNT / 2), count_up
+    assert count_up >= int(COUNT_OF_NODES / 2), count_up
 
 
 async def validate_infra_node_start(idx: int) -> bool:
