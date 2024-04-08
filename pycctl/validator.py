@@ -19,7 +19,7 @@ from pycctl.node import get_rpc_client
 
 async def validate_chain_accounts_are_funded():
     """Validates funding status of CCTL accounts.
-    
+
     """
     assert await get_account_balance(AccountType.FAUCET) > 0
     for idx in range(1, COUNT_OF_USERS):
@@ -30,7 +30,7 @@ async def validate_chain_accounts_are_funded():
 
 def validate_infra_net_assets_setup():
     """Validates that net infrastructure assets are correctly setup.
-    
+
     """
     def _parse_path_to_root():
         assert get_path_to_root().exists()
@@ -89,7 +89,7 @@ def validate_infra_net_assets_setup():
 
 async def validate_infra_net_is_up():
     """Validates that net nodes are up.
-    
+
     """
     count_up: int = 0
     for idx in range(1, COUNT_OF_NODES):
@@ -99,11 +99,11 @@ async def validate_infra_net_is_up():
     assert count_up >= int(COUNT_OF_NODES / 2), count_up
 
 
-async def validate_infra_node_start(idx: int) -> bool:
+async def validate_infra_node_start(node_idx: int) -> bool:
     """Validates that node is up.
-    
+
     """
-    client = get_rpc_client(idx)        
+    client = get_rpc_client(node_idx)
     try:
         await client.get_node_status()
     except:

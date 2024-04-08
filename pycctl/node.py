@@ -1,3 +1,5 @@
+import typing
+
 from pycspr.api.rest import Client as RestClient
 from pycspr.api.rest import ConnectionInfo as RestConnectionInfo
 from pycspr.api.rpc import Client as RpcClient
@@ -10,10 +12,12 @@ from pycctl.constants import BASE_PORT_REST
 from pycctl.constants import BASE_PORT_RPC
 from pycctl.constants import BASE_PORT_SPEC_EXEC
 from pycctl.constants import BASE_PORT_SSE
+from pycctl.constants import NODE_IDX
 from pycctl.types import NodePortType
 
 
-_PORT_BY_TYPE = {
+# Map: Node port type <-> base port.
+_PORT_BY_TYPE: typing.Dict[NodePortType, int] = {
     NodePortType.REST: BASE_PORT_REST,
     NodePortType.RPC: BASE_PORT_RPC,
     NodePortType.RPC_SPECULATIVE: BASE_PORT_SPEC_EXEC,
@@ -23,21 +27,21 @@ _PORT_BY_TYPE = {
 
 def get_port(port_type: NodePortType, node_idx: int) -> int:
     """Returns a node's port.
-    
+
     :param port_type: Type of node port.
     :param node_idx: Index of node.
     :returns: A node port.
-    
+
     """
     return _PORT_BY_TYPE[port_type] + node_idx
 
 
 def get_rest_client(node_idx: int = 1) -> RestClient:
     """Returns a node REST API client.
-    
+
     :param node_idx: Index of node.
     :returns: A node REST API client.
-    
+
     """
     return RestClient(
         RestConnectionInfo(
@@ -46,12 +50,12 @@ def get_rest_client(node_idx: int = 1) -> RestClient:
     )
 
 
-def get_rpc_client(node_idx: int = 1) -> RpcClient:
+def get_rpc_client(node_idx: int = NODE_IDX) -> RpcClient:
     """Returns a node JSON-RPC API client.
-    
+
     :param node_idx: Index of node.
     :returns: A node JSON-RPC API client.
-    
+
     """
     return RpcClient(
         RpcConnectionInfo(
@@ -60,12 +64,12 @@ def get_rpc_client(node_idx: int = 1) -> RpcClient:
     )
 
 
-def get_rpc_speculative_client(node_idx: int = 1) -> RpcSpeculativeClient:
+def get_rpc_speculative_client(node_idx: int = NODE_IDX) -> RpcSpeculativeClient:
     """Returns a node speculative JSON-RPC API client.
-    
+
     :param node_idx: Index of node.
     :returns: A node speculative JSON-RPC API client.
-    
+
     """
     return RpcSpeculativeClient(
         RpcSpeculativeConnectionInfo(
@@ -74,12 +78,12 @@ def get_rpc_speculative_client(node_idx: int = 1) -> RpcSpeculativeClient:
     )
 
 
-def get_sse_client(node_idx: int = 1) -> SseClient:
+def get_sse_client(node_idx: int = NODE_IDX) -> SseClient:
     """Returns a node SSE API client.
-    
+
     :param node_idx: Index of node.
     :returns: A node SSE API client.
-    
+
     """
     return SseClient(
         SseConnectionInfo(
