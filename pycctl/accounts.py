@@ -4,8 +4,8 @@ from pycctl.fsys import read_account_public_key
 from pycctl.node import get_rpc_client
 from pycctl.types import AccountType
 from pycspr import get_account_hash
-from pycspr.types.node.rpc import PurseID
-from pycspr.types.node.rpc import PurseIDType
+from pycspr.types.node import PurseID
+from pycspr.types.node import PurseIDType
 
 
 async def get_account_balance(

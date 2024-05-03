@@ -52,9 +52,9 @@ NODE_BINARIES: typing.Set[str] = {
 
 # Set of node config files.
 NODE_CONFIG: typing.Set[str] = {
-    f"{PROTOCOL_VERSION}/accounts.toml",
-    f"{PROTOCOL_VERSION}/chainspec.toml",
-    f"{PROTOCOL_VERSION}/config.toml",
+    "accounts.toml",
+    "chainspec.toml",
+    "config.toml",
 }
 
 # Default node ordinal identfier.
